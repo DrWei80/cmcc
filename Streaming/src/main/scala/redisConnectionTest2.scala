@@ -19,9 +19,28 @@ object redisConnectionTest2 {
 
     println(jedis.ping())
 
-    stringDemo(jedis)
+//    stringDemo(jedis)
+    setDemo(jedis)
 
   }
+
+
+  //操作Set,不重复&无序
+  def setDemo(jedis:Jedis)={
+    //向一个set中添加元素
+    jedis.sadd("city","北京","北京","北京","深圳","广州")
+    jedis.sadd("flower","梅","玫瑰","牡丹","食人")
+    println(jedis.smembers("city"))
+    println(jedis.smembers("flower"))
+    jedis.srem("flower","梅","玫瑰","牡丹")
+    println(jedis.smembers("flower"))
+    //合并set
+    jedis.sunionstore("city&flower","city","flower")
+    println(jedis.smembers("city&flower"))
+    //获取随机元素
+    println(jedis.srandmember("city", 2))
+  }
+
   //操作字符串
   def stringDemo(jedis:Jedis)={
     jedis.set("name","胡锦涛")
