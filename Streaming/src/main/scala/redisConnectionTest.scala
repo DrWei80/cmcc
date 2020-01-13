@@ -5,5 +5,8 @@ object redisConnectionTest {
     val jedis = new Jedis("wqm02s", 6379)
     jedis.auth("123456")
     println(jedis.ping())
+    jedis.set("a","我是你爸爸")
+    val val1=jedis.get("a")
+    println(val1)
   }
 }
