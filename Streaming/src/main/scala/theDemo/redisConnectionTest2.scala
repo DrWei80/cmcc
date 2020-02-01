@@ -1,3 +1,5 @@
+package theDemo
+
 import redis.clients.jedis.{Jedis, JedisPool, JedisPoolConfig}
 
 object redisConnectionTest2 {
@@ -19,11 +21,63 @@ object redisConnectionTest2 {
 
     println(jedis.ping())
 
+    hsetDemo(jedis)
+//    listDemo(jedis)
+//    zsetDemo(jedis)
 //    stringDemo(jedis)
-    setDemo(jedis)
+//    setDemo(jedis)
 
   }
+  /**
+    * Hash 散列
+    */
+  def hsetDemo(jedis:Jedis)={
+    jedis.hset("user","name","zhangsan")
+    jedis.hset("user","age","28")
+    // 获取某一个key值
+    println(jedis.hget("user", "age"))
+    // 获取所有
+    println(jedis.hgetAll("user"))
+    // 自增
+    jedis.hincrBy("user","age",1)
+    // 获取hash字段数量
+    println(jedis.hlen("user"))
+    // 获取多个值
+    println(jedis.hmget("user", "age", "name"))
+    // 获取所有的value值
+    println(jedis.hvals("user"))
+    // 获取所有的key
+    println(jedis.hkeys("user"))
+    // 删除字段
+    jedis.hdel("user","age")
+  }
 
+  /**
+    * 队列 List
+    */
+
+  def listDemo(jedis:Jedis)={
+    jedis.lpush("name","wqm","zyx")
+    jedis.rpush("name","猪","55")
+    println(jedis.lrange("name", 0, -1))
+    jedis.lpop("name")
+    println(jedis.lrange("name", 0, -1))
+  }
+  //zset
+//        元素不重复，有序集合
+//       元素排序按照score排序
+//       score值越大，排名越靠后
+  def zsetDemo(jedis:Jedis)={
+  jedis.zadd("price",1,"5")
+  jedis.zadd("price",2,"4")
+  jedis.zadd("price",3,"3")
+  jedis.zadd("price",4,"2")
+  jedis.zadd("price",5,"1")
+  println(jedis.zrange("price", 0, -1))
+  jedis.zincrby("price",10,"3")
+  println(jedis.zrange("price", 0, -1))
+  println(jedis.zscore("price", "3"))
+  }
 
   //操作Set,不重复&无序
   def setDemo(jedis:Jedis)={

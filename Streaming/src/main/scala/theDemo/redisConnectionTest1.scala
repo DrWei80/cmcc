@@ -1,3 +1,5 @@
+package theDemo
+
 import redis.clients.jedis.Jedis
 
 object redisConnectionTest1 {
